@@ -32,7 +32,7 @@ from eotlib.data import build_many                      # noqa: E402
 from eotlib.features import FEATURE_NAMES               # noqa: E402
 from eotlib.model import RankCalibrated                 # noqa: E402
 
-FEATURE_VERSION = 4          # bump whenever features.py changes meaningfully
+FEATURE_VERSION = 5          # bump whenever features.py changes meaningfully
 DEFAULT_DIRS = ["eot_handout/eot_data/english", "eot_handout/eot_data/hindi"]
 
 # Cost weighting. A hold only causes a false cutoff if it outlives the agent's

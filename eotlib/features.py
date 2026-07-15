@@ -80,21 +80,20 @@ FEATURE_NAMES = [
     # --- LOCAL final slowing. From the error study: "speaking fast, end mai
     # usually we speak slowly". rate_ratio compares a 1.5 s tail against a 10 s
     # history, which is far too blunt to see a speaker decelerating INTO the
-    # pause. These compare the last ~500 ms against the second immediately
-    # before it, and the final syllable against its 3 immediate predecessors --
-    # final lengthening is a local effect, not a turn-wide average.
-    "rate_final_500", "rate_decel", "syll_final_vs_prev3",
+    # pause; these compare the last ~500 ms against the second before it.
+    # Strong in English (0.694 / 0.669), weak in Hindi -- right cue, and it
+    # turns out the languages differ on it.
+    "rate_final_500", "rate_decel",
     # --- PROMINENCE of the last syllable. From the error study: "aur is not
     # end, it is conjunction". Hindi function words that promise more (aur, toh,
     # ki) are short and unstressed; a turn-final predicate carries stress. So
     # compare the final voiced run against the one before it in both energy and
     # duration -- a weak, short final syllable means a function word is dangling.
     "prom_energy_final", "prom_dur_final",
-    # --- LIST INTONATION. From the error study: "number is not the end". People
-    # reading out numbers/items produce unusually REGULAR syllable timing and a
-    # level pitch. Low variability of inter-syllable intervals = enumerating =
-    # more coming.
-    "rhythm_regularity",
+    # Two more round-2 candidates were built and CUT for carrying no signal:
+    # "rhythm_regularity" (list intonation, from "number is not the end") scored
+    # 0.512, and a local final-lengthening ratio scored 0.516. The perception is
+    # real; energy-peak timing is evidently not how to measure it.
     # --- causal turn context
     "elapsed_s", "n_prior_pauses", "prior_pause_mean_s", "prior_pause_max_s",
     "speech_run_s", "voiced_frac_hist",
@@ -376,12 +375,6 @@ def _features(xs, sr, prior):
         if len(prev1000) >= 20:
             out[i["rate_decel"]] = float(rf / (_rate(prev1000) + 1e-6))
 
-    # ---- final lengthening measured LOCALLY: the last syllable against its
-    # immediate predecessors, not against a turn-wide mean
-    if runs and len(runs) >= 4:
-        durs = np.array([(b - a) for a, b in runs], float) * HOP_MS / 1000.0
-        out[i["syll_final_vs_prev3"]] = float(durs[-1] / (durs[-4:-1].mean() + 1e-6))
-
     # ---- prominence of the final syllable vs the one before it. A dangling
     # unstressed function word (aur / toh / ki) is quiet and short.
     if runs and len(runs) >= 2:
@@ -391,12 +384,6 @@ def _features(xs, sr, prior):
             out[i["prom_energy_final"]] = float(e_fin.max() - e_prev.max())
             out[i["prom_dur_final"]] = float((b1 - a1) / max(b0 - a0, 1))
 
-    # ---- list intonation: reading out numbers/items gives unusually EVEN
-    # syllable timing ("number is not the end")
-    pk = _peaks(e_t)
-    if len(pk) >= 4:
-        iv = np.diff(pk).astype(float)
-        out[i["rhythm_regularity"]] = float(iv.std() / (iv.mean() + 1e-6))  # low = list-like
 
     # ---- causal turn context (no future, no file length)
     out[i["elapsed_s"]] = len(xs) / sr
