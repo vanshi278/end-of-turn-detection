@@ -26,9 +26,9 @@ carried on anyway, which prosody alone cannot separate — a native Hindi speake
 scored 75% blind on this exact contrast, so roughly 25 points of the gap is
 audible headroom and the rest may not be.
 
-**With one more day.** Round two of the error-listening kit (already built, 32
-clips of the model's most expensive out-of-fold mistakes) to mine the false
-alarms the way round one produced the pitch-percentile and MFCC features; then a
+**With one more day.** Finish round two of the error-listening kit (the Hindi
+false-alarm half is done and already produced final-syllable prominence, our
+2nd-best Hindi feature at 0.660, from "aur is not end, it is conjunction"); then a
 small learned front-end — a shallow CNN over log-mel of the last 1.5 s, trained
 from scratch with time-stretch and noise augmentation to fight the 200-turn
 sample size — since the handcrafted plateau (runs 8–10) is a feature-vocabulary
