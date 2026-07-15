@@ -1,0 +1,30 @@
+# ---------------------------------------------------------------------------
+# Provided dataset - deliberately NOT published.
+# eot_data/ is real human-to-voice-agent phone audio (restaurant bookings,
+# appointments, orders): real customers' voices, spoken names, addresses and
+# numbers. It is also the assignment's proprietary data and its ground truth.
+# Drop the handout in locally to run this; nothing here redistributes it.
+# ---------------------------------------------------------------------------
+eot_handout/eot_data/
+eot_handout/*.zip
+
+# Audio clips cut from that data for the human listening studies
+listening_kit/*.wav
+error_kit/*.wav
+
+# ---------------------------------------------------------------------------
+# Environment / build artefacts
+# ---------------------------------------------------------------------------
+env/
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.cache/
+.DS_Store
+*.egg-info/
+
+# stray scorer outputs
+eot_handout/starter/base.csv
+eot_handout/starter/mine.csv

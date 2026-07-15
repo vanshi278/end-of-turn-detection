@@ -1,0 +1,279 @@
+<style>
+:root{color-scheme:light dark}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.65 ui-sans-serif,-apple-system,"Segoe UI",Roboto,sans-serif;
+  background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+.viz-root{
+  --bg:#fcfcfb; --panel:#ffffff; --ink:#0b0b0b; --ink-2:#52514e; --ink-3:#78776f;
+  --line:#e4e3de; --blue:#2a78d6; --green:#008300; --gray:#b9b8b1; --accent-soft:#eef4fc;
+}
+@media (prefers-color-scheme:dark){:root:where(:not([data-theme="light"])) .viz-root{
+  --bg:#141413; --panel:#1a1a19; --ink:#ffffff; --ink-2:#c3c2b7; --ink-3:#8d8c83;
+  --line:#33322e; --blue:#3987e5; --green:#008300; --gray:#6b6a63; --accent-soft:#1d2937;
+}}
+:root[data-theme="dark"] .viz-root{
+  --bg:#141413; --panel:#1a1a19; --ink:#ffffff; --ink-2:#c3c2b7; --ink-3:#8d8c83;
+  --line:#33322e; --blue:#3987e5; --green:#008300; --gray:#6b6a63; --accent-soft:#1d2937;
+}
+.wrap{max-width:980px;margin:0 auto;padding:56px 24px 96px}
+h1{font-size:34px;line-height:1.2;margin:0 0 8px;letter-spacing:-.02em}
+.sub{color:var(--ink-2);margin:0 0 40px;font-size:17px}
+h2{font-size:22px;margin:52px 0 14px;letter-spacing:-.01em;padding-bottom:8px;border-bottom:1px solid var(--line)}
+h3{font-size:16px;margin:28px 0 8px;color:var(--ink)}
+p{margin:0 0 14px;color:var(--ink-2)}
+p strong,li strong{color:var(--ink)}
+code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--accent-soft);
+  padding:1px 5px;border-radius:4px;color:var(--ink)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:24px 0 8px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.kpi .n{font-size:30px;font-weight:650;letter-spacing:-.02em;color:var(--ink)}
+.kpi .n small{font-size:14px;font-weight:500;color:var(--ink-3)}
+.kpi .k{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);margin-bottom:4px}
+.kpi .d{font-size:12.5px;color:var(--ink-2);margin-top:3px}
+figure{margin:22px 0 8px;background:var(--panel);border:1px solid var(--line);
+  border-radius:10px;padding:16px 18px 10px;overflow-x:auto}
+figcaption{font-size:13px;color:var(--ink-3);margin-top:6px}
+svg{display:block;width:100%;height:auto;min-width:520px}
+.axis{stroke:var(--line);stroke-width:1}
+.grid{stroke:var(--line);stroke-width:1;stroke-dasharray:2 4}
+.chance{stroke:var(--ink-3);stroke-width:1.5;stroke-dasharray:4 4}
+.tick{fill:var(--ink-3);font-size:11px}
+.lab{fill:var(--ink);font-size:13.5px;font-weight:550}
+.lab-sm{fill:var(--ink-2);font-size:11.5px}
+.val{fill:var(--ink-2);font-size:12px}
+.val-sm{fill:var(--ink-3);font-size:10.5px}
+.val.strong{fill:var(--ink);font-weight:650;font-size:13px}
+.dumb{stroke:var(--gray);stroke-width:2}
+.dot-base{fill:var(--gray);stroke:var(--panel);stroke-width:2}
+.dot-ours{fill:var(--blue);stroke:var(--panel);stroke-width:2}
+.rng-base{stroke:var(--gray);stroke-width:6;stroke-linecap:round}
+.rng-ours{stroke:var(--blue);stroke-width:6;stroke-linecap:round;opacity:.85}
+.bar-auc{fill:var(--gray)}
+.bar-hard{fill:var(--blue)}
+.bar-human{fill:var(--blue)}
+.bar-other{fill:var(--gray)}
+.line-en{fill:none;stroke:var(--gray);stroke-width:2}
+.line-hi{fill:none;stroke:var(--blue);stroke-width:2}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-2);margin:2px 0 10px}
+.legend i{width:11px;height:11px;border-radius:3px;display:inline-block;margin-right:6px;vertical-align:-1px}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line)}
+th{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);font-weight:600}
+td{color:var(--ink-2)} td:first-child{color:var(--ink)}
+.num{font-variant-numeric:tabular-nums}
+.callout{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--blue);
+  border-radius:8px;padding:14px 18px;margin:18px 0}
+.callout.warn{border-left-color:#eb6834}
+.callout h3{margin:0 0 6px}
+.callout p:last-child{margin-bottom:0}
+ul{margin:0 0 14px;padding-left:22px;color:var(--ink-2)} li{margin:5px 0}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:760px){.split{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.card h3{margin-top:0}
+.who{font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+.who.h{color:var(--green)} .who.a{color:var(--blue)}
+footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  font-size:12.5px;color:var(--ink-3)}
+</style>
+<div class="viz-root"><div class="wrap">
+<h1>End-of-Turn Detection</h1>
+<p class="sub">Predicting whether a speaker is finished or just thinking, from
+496 pauses across 200 real phone turns in English and Hindi —
+using only audio the agent could actually have heard by that moment.</p>
+
+<div class="kpis">
+  <div class="kpi"><div class="k">English</div><div class="n">1116<small> ms</small></div>
+    <div class="d">from 1600 ms baseline · −484 ms</div></div>
+  <div class="kpi"><div class="k">Hindi</div><div class="n">850<small> ms</small></div>
+    <div class="d">baseline 850 ms · see honest read below</div></div>
+  <div class="kpi"><div class="k">Bootstrap gain (En)</div><div class="n">443<small> ms</small></div>
+    <div class="d">95% CI [130, 649] · wins 100% of resamples</div></div>
+  <div class="kpi"><div class="k">Human ceiling (Hindi)</div><div class="n">75<small>%</small></div>
+    <div class="d">blind, native speaker, n=24 · 88% when confident</div></div>
+</div>
+<p style="font-size:13.5px;color:var(--ink-3)">Every score is <strong>out-of-fold</strong>
+(GroupKFold by turn, 3 seeds) and produced by the official <code>score.py</code>.
+The same model scores 511 ms in-sample on these folders. That number is
+memorisation and appears nowhere in our claims.</p>
+
+<h2>The result</h2>
+<figure><svg viewBox="0 0 660 190" role="img" aria-label="Response delay, baseline versus our model"><line x1="96" y1="156" x2="510" y2="156" class="axis"/><line x1="96.0" y1="34" x2="96.0" y2="156" class="grid"/><text x="96.0" y="172" class="tick" text-anchor="middle">0</text><line x1="217.8" y1="34" x2="217.8" y2="156" class="grid"/><text x="217.8" y="172" class="tick" text-anchor="middle">500</text><line x1="339.5" y1="34" x2="339.5" y2="156" class="grid"/><text x="339.5" y="172" class="tick" text-anchor="middle">1000</text><line x1="461.3" y1="34" x2="461.3" y2="156" class="grid"/><text x="461.3" y="172" class="tick" text-anchor="middle">1500</text><text x="82" y="67" class="lab" text-anchor="end">English</text><line x1="367.8" y1="62" x2="485.6" y2="62" class="dumb"/><circle cx="485.6" cy="62" r="6" class="dot-base"/><circle cx="367.8" cy="62" r="6" class="dot-ours"/><text x="499.6" y="66" class="val">1600 ms baseline</text><text x="353.8" y="66" class="val strong" text-anchor="end">1116 ms</text><text x="82" y="119" class="lab" text-anchor="end">Hindi</text><line x1="303.0" y1="114" x2="303.0" y2="114" class="dumb"/><circle cx="303.0" cy="114" r="6" class="dot-base"/><circle cx="303.0" cy="114" r="6" class="dot-ours"/><text x="317.0" y="118" class="val strong">850 ms — matches baseline</text><text x="510" y="186" class="tick" text-anchor="end">mean response delay (ms) — lower is better</text></svg>
+<div class="legend"><span><i style="background:var(--gray)"></i>silence-only baseline</span>
+<span><i style="background:var(--blue)"></i>our model (out-of-fold)</span></div>
+<figcaption>Mean response delay at ≤5% interrupted turns. English improves by
+484 ms (30%). Hindi matches its baseline — the honest read is below.</figcaption></figure>
+
+<h2>Why the metric is not what it looks like</h2>
+<p>The scorer waits <code>delay</code> seconds at each pause and speaks if
+<code>p_eot ≥ threshold</code>. It sweeps both and reports the lowest mean delay
+that keeps interrupted turns ≤5%. Two structural facts fall out of that, and they
+drive every decision we made:</p>
+<ul>
+<li><strong>A hold pause only costs anything if it outlives the delay.</strong> If
+the user resumes before the agent speaks, nobody notices. Short holds are free.</li>
+<li><strong>Cost is counted per turn, not per pause.</strong> A turn is interrupted
+if <em>any</em> of its holds fires; the second mistake in a turn is free.</li>
+</ul>
+<figure><svg viewBox="0 0 660 220" role="img" aria-label="Share of hold pauses that cannot cause a false cutoff"><line x1="60" y1="176.0" x2="564" y2="176.0" class="grid"/><text x="52" y="180.0" class="tick" text-anchor="end">0%</text><line x1="60" y1="141.0" x2="564" y2="141.0" class="grid"/><text x="52" y="145.0" class="tick" text-anchor="end">25%</text><line x1="60" y1="106.0" x2="564" y2="106.0" class="grid"/><text x="52" y="110.0" class="tick" text-anchor="end">50%</text><line x1="60" y1="71.0" x2="564" y2="71.0" class="grid"/><text x="52" y="75.0" class="tick" text-anchor="end">75%</text><line x1="60" y1="36.0" x2="564" y2="36.0" class="grid"/><text x="52" y="40.0" class="tick" text-anchor="end">100%</text><text x="110.4" y="198" class="tick" text-anchor="middle">0.25</text><text x="194.4" y="198" class="tick" text-anchor="middle">0.50</text><text x="278.4" y="198" class="tick" text-anchor="middle">0.75</text><text x="362.4" y="198" class="tick" text-anchor="middle">1.00</text><text x="446.4" y="198" class="tick" text-anchor="middle">1.25</text><text x="530.4" y="198" class="tick" text-anchor="middle">1.50</text><polyline points="60.0,176.0 76.8,167.5 93.6,158.0 110.4,146.7 127.2,134.4 144.0,124.0 160.8,117.4 177.6,104.1 194.4,89.0 211.2,88.0 228.0,80.5 244.8,79.5 261.6,76.7 278.4,73.8 295.2,70.1 312.0,64.4 328.8,61.5 345.6,57.8 362.4,54.9 379.2,54.9 396.0,52.1 412.8,52.1 429.6,50.2 446.4,50.2 463.2,49.2 480.0,49.2 496.8,47.4 513.6,47.4 530.4,47.4 547.2,47.4 564.0,46.4" class="line-en"/><text x="574.0" y="50.4" class="lab-sm">English</text><polyline points="60.0,176.0 76.8,159.9 93.6,144.8 110.4,129.6 127.2,116.4 144.0,107.9 160.8,96.5 177.6,80.5 194.4,59.6 211.2,59.6 228.0,53.0 244.8,50.2 261.6,46.4 278.4,45.5 295.2,44.5 312.0,40.7 328.8,40.7 345.6,38.8 362.4,37.9 379.2,37.9 396.0,37.9 412.8,37.9 429.6,37.9 446.4,37.9 463.2,37.9 480.0,37.9 496.8,37.9 513.6,36.9 530.4,36.0 547.2,36.0 564.0,36.0" class="line-hi"/><text x="574.0" y="40.0" class="lab-sm">Hindi</text><line x1="244.8" y1="26" x2="244.8" y2="176" class="chance"/><text x="250.8" y="38" class="tick">0.65 s delay</text><text x="564" y="214" class="tick" text-anchor="end">agent action delay (s)</text></svg>
+<figcaption>Share of hold pauses that <em>cannot</em> cause a false cutoff, by
+delay. At a 0.65 s delay, 90% of Hindi holds are already harmless — only ~25
+pauses in the entire Hindi set can ever hurt us.</figcaption></figure>
+
+<div class="callout"><h3>The finding that reorganised the project</h3>
+<p>Overall AUC averages over every hold, <strong>75% of which the metric does not
+score</strong>. Splitting it out, our model at AUC 0.685 was scoring
+<strong>0.52 — chance — on the only contrast that pays</strong>: turn-end versus a
+hold long enough to interrupt someone. It had learned to separate turn-ends from
+<em>short</em> holds, which is worth exactly zero milliseconds. We promoted
+<code>hard_auc</code> to the headline diagnostic so this could not hide again.</p></div>
+
+<figure><svg viewBox="0 0 660 210" role="img" aria-label="AUC versus hard AUC"><line x1="96" y1="147.7" x2="636" y2="147.7" class="grid"/><text x="86" y="151.7" class="tick" text-anchor="end">0.5</text><line x1="96" y1="115.1" x2="636" y2="115.1" class="grid"/><text x="86" y="119.1" class="tick" text-anchor="end">0.6</text><line x1="96" y1="82.6" x2="636" y2="82.6" class="grid"/><text x="86" y="86.6" class="tick" text-anchor="end">0.7</text><line x1="96" y1="50.0" x2="636" y2="50.0" class="grid"/><text x="86" y="54.0" class="tick" text-anchor="end">0.8</text><line x1="96" y1="147.7" x2="636" y2="147.7" class="chance"/><text x="634" y="139.7" class="tick" text-anchor="end">chance</text><rect x="130.0" y="87.5" width="29.0" height="76.5" rx="4" class="bar-auc"/><text x="144.5" y="80.5" class="val" text-anchor="middle">0.69</text><rect x="163.0" y="81.3" width="29.0" height="82.7" rx="4" class="bar-hard"/><text x="177.5" y="74.3" class="val" text-anchor="middle">0.70</text><text x="161.0" y="186" class="tick" text-anchor="middle">English</text><text x="161.0" y="199" class="tick" text-anchor="middle">before study</text><rect x="232.0" y="102.4" width="29.0" height="61.6" rx="4" class="bar-auc"/><text x="246.5" y="95.4" class="val" text-anchor="middle">0.64</text><rect x="265.0" y="76.1" width="29.0" height="87.9" rx="4" class="bar-hard"/><text x="279.5" y="69.1" class="val" text-anchor="middle">0.72</text><text x="263.0" y="186" class="tick" text-anchor="middle">English</text><text x="263.0" y="199" class="tick" text-anchor="middle">final</text><rect x="334.0" y="87.5" width="29.0" height="76.5" rx="4" class="bar-auc"/><text x="348.5" y="80.5" class="val" text-anchor="middle">0.69</text><rect x="367.0" y="144.8" width="29.0" height="19.2" rx="4" class="bar-hard"/><text x="381.5" y="137.8" class="val" text-anchor="middle">0.51</text><text x="365.0" y="186" class="tick" text-anchor="middle">Hindi</text><text x="365.0" y="199" class="tick" text-anchor="middle">before study</text><rect x="436.0" y="80.6" width="29.0" height="83.4" rx="4" class="bar-auc"/><text x="450.5" y="73.6" class="val" text-anchor="middle">0.71</text><rect x="469.0" y="79.3" width="29.0" height="84.7" rx="4" class="bar-hard"/><text x="483.5" y="72.3" class="val" text-anchor="middle">0.71</text><text x="467.0" y="186" class="tick" text-anchor="middle">Hindi</text><text x="467.0" y="199" class="tick" text-anchor="middle">final</text></svg>
+<div class="legend"><span><i style="background:var(--gray)"></i>overall AUC (flattering)</span>
+<span><i style="background:var(--blue)"></i>hard_auc — eot vs holds &gt;0.6 s (what pays)</span></div>
+<figcaption>Same model, two measurements. Before the listening study, Hindi
+hard_auc was 0.509 while overall AUC read 0.685. AUC also <em>fell</em> when
+cost-weighting <em>improved</em> the score (run 4) — it is the wrong objective.</figcaption></figure>
+
+<h2>What the model listens to</h2>
+<p>For each pause, features come only from audio in <code>[0, pause_start)</code>.
+The entry point truncates there and hands the truncated copy to a function that
+never receives the rest, so feature code <em>cannot</em> see the future rather
+than merely being careful not to.</p>
+<figure><svg viewBox="0 0 660 364" role="img" aria-label="Per-feature discrimination on the contrast that matters"><line x1="150.0" y1="28" x2="150.0" y2="338" class="grid"/><text x="150.0" y="354" class="tick" text-anchor="middle">0.50</text><line x1="233.8" y1="28" x2="233.8" y2="338" class="grid"/><text x="233.8" y="354" class="tick" text-anchor="middle">0.55</text><line x1="317.7" y1="28" x2="317.7" y2="338" class="grid"/><text x="317.7" y="354" class="tick" text-anchor="middle">0.60</text><line x1="401.5" y1="28" x2="401.5" y2="338" class="grid"/><text x="401.5" y="354" class="tick" text-anchor="middle">0.65</text><line x1="485.4" y1="28" x2="485.4" y2="338" class="grid"/><text x="485.4" y="354" class="tick" text-anchor="middle">0.70</text><text x="138" y="49" class="lab-sm" text-anchor="end">mfcc7</text><rect x="150" y="40" width="340.4" height="15" rx="4" class="bar-human"/><text x="498.4" y="49" class="val-sm">0.703</text><text x="138" y="70" class="lab-sm" text-anchor="end">mfcc5</text><rect x="150" y="61" width="328.7" height="15" rx="4" class="bar-human"/><text x="486.7" y="70" class="val-sm">0.696</text><text x="138" y="91" class="lab-sm" text-anchor="end">unvoiced_frac_final</text><rect x="150" y="82" width="251.5" height="15" rx="4" class="bar-other"/><text x="409.5" y="91" class="val-sm">0.650</text><text x="138" y="112" class="lab-sm" text-anchor="end">rate_ratio</text><rect x="150" y="103" width="243.2" height="15" rx="4" class="bar-other"/><text x="401.2" y="112" class="val-sm">0.645</text><text x="138" y="133" class="lab-sm" text-anchor="end">f0_min_pct</text><rect x="150" y="124" width="238.1" height="15" rx="4" class="bar-human"/><text x="396.1" y="133" class="val-sm">0.642</text><text x="138" y="154" class="lab-sm" text-anchor="end">f0_final_pct</text><rect x="150" y="145" width="233.1" height="15" rx="4" class="bar-human"/><text x="391.1" y="154" class="val-sm">0.639</text><text x="138" y="175" class="lab-sm" text-anchor="end">f0_slope_tail</text><rect x="150" y="166" width="223.0" height="15" rx="4" class="bar-other"/><text x="381.0" y="175" class="val-sm">0.633</text><text x="138" y="196" class="lab-sm" text-anchor="end">centroid_final_z</text><rect x="150" y="187" width="221.4" height="15" rx="4" class="bar-other"/><text x="379.4" y="196" class="val-sm">0.632</text><text x="138" y="217" class="lab-sm" text-anchor="end">f0_end_vs_ceil</text><rect x="150" y="208" width="209.6" height="15" rx="4" class="bar-human"/><text x="367.6" y="217" class="val-sm">0.625</text><text x="138" y="238" class="lab-sm" text-anchor="end">f0_end_vs_floor</text><rect x="150" y="229" width="207.9" height="15" rx="4" class="bar-human"/><text x="365.9" y="238" class="val-sm">0.624</text><text x="138" y="259" class="lab-sm" text-anchor="end">flux_final</text><rect x="150" y="250" width="202.9" height="15" rx="4" class="bar-other"/><text x="360.9" y="259" class="val-sm">0.621</text><text x="138" y="280" class="lab-sm" text-anchor="end">mfcc6</text><rect x="150" y="271" width="197.9" height="15" rx="4" class="bar-human"/><text x="355.9" y="280" class="val-sm">0.618</text><text x="138" y="301" class="lab-sm" text-anchor="end">abruptness</text><rect x="150" y="292" width="194.5" height="15" rx="4" class="bar-human"/><text x="352.5" y="301" class="val-sm">0.616</text><text x="138" y="322" class="lab-sm" text-anchor="end">f0_last_minus_min</text><rect x="150" y="313" width="191.2" height="15" rx="4" class="bar-other"/><text x="349.2" y="322" class="val-sm">0.614</text></svg>
+<div class="legend"><span><i style="background:var(--blue)"></i>born from the human listening study</span>
+<span><i style="background:var(--gray)"></i>standard prosodic features</span></div>
+<figcaption>Per-feature discrimination on the Hindi contrast that pays (distance
+from chance; n=120). The top features are the ones the listening study
+produced — before it, the whole model sat at 0.509.</figcaption></figure>
+
+<div class="split">
+<div class="card"><h3>Pitch position, not pitch value</h3>
+<p>The listener's dominant cue was <em>"pitch dropped"</em> → end and <em>"pitch
+was very high, cant be the end"</em> → hold. Crucially, high and low are relative
+to <strong>that speaker</strong>. So we encode the final pitch as a
+<strong>percentile of that speaker's own pitch history</strong>, not a z-score:
+the ear asks "did you come home to your floor?", not "how many IQRs from your
+median?". It beat the z-score head to head — 0.639 vs 0.595.</p></div>
+<div class="card"><h3>Vowel identity without ASR</h3>
+<p>The listener read Hindi verb endings lexically — <em>"rahega used"</em>,
+<em>"ended with rakhiyega"</em>. We cannot run ASR, but Hindi is verb-final and
+its finite verbs land on a small set of vowel qualities. Cepstral-mean-normalised
+MFCCs over the final voiced nucleus encode exactly that, and became our strongest
+Hindi features: <strong>mfcc7 = 0.703, mfcc5 = 0.696</strong>.</p></div>
+<div class="card"><h3>Breath</h3>
+<p><em>"person taking breath"</em> → hold. A speaker reloading leaves a trailing
+unvoiced, noisy, low-energy stretch. <code>unvoiced_frac_final</code> is among our
+best features in both languages.</p></div>
+<div class="card"><h3>Cost-aware training</h3>
+<p>Holds are weighted by whether they could actually interrupt anyone. A hold
+shorter than the delay is free and shouldn't consume model capacity.
+<code>dur</code> is used only at training time, from the labels, exactly like
+<code>class_weight</code> — it is future information at inference and never
+reaches a feature.</p></div>
+</div>
+
+<h2>The honest read on Hindi</h2>
+<p>Hindi's 850 ms is a <strong>degenerate baseline</strong>: exactly 5 of its 100
+turns contain a hold longer than 0.85 s — exactly the 5% budget — so "fire at
+everything after 850 ms" saturates the constraint and cannot be beaten without a
+lower delay. That is a property of <em>this draw of 100 turns</em>, not of Hindi.
+A single number on a single sample cannot tell "no better than a timer" from
+"better, but this sample's baseline is degenerate", so we resampled turns.</p>
+<figure><svg viewBox="0 0 660 210" role="img" aria-label="Bootstrap 95% intervals"><line x1="96.0" y1="26" x2="96.0" y2="176" class="grid"/><text x="96.0" y="192" class="tick" text-anchor="middle">0</text><line x1="226.0" y1="26" x2="226.0" y2="176" class="grid"/><text x="226.0" y="192" class="tick" text-anchor="middle">500</text><line x1="356.0" y1="26" x2="356.0" y2="176" class="grid"/><text x="356.0" y="192" class="tick" text-anchor="middle">1000</text><line x1="486.0" y1="26" x2="486.0" y2="176" class="grid"/><text x="486.0" y="192" class="tick" text-anchor="middle">1500</text><text x="82" y="49" class="lab" text-anchor="end">English</text><line x1="434.0" y1="44" x2="512.0" y2="44" class="rng-base"/><circle cx="500.6" cy="44" r="5.5" class="dot-base"/><text x="524.0" y="48" class="tick">baseline 1556</text><line x1="340.0" y1="70" x2="461.2" y2="70" class="rng-ours"/><circle cx="385.5" cy="70" r="5.5" class="dot-ours"/><text x="473.2" y="74" class="tick">ours 1113</text><text x="82" y="125" class="lab" text-anchor="end">Hindi</text><line x1="291.0" y1="120" x2="356.0" y2="120" class="rng-base"/><circle cx="325.3" cy="120" r="5.5" class="dot-base"/><text x="368.0" y="124" class="tick">baseline 882</text><line x1="267.4" y1="146" x2="356.0" y2="146" class="rng-ours"/><circle cx="313.5" cy="146" r="5.5" class="dot-ours"/><text x="368.0" y="150" class="tick">ours 836</text><text x="538" y="206" class="tick" text-anchor="end">95% interval over 600 turn-resamples (ms)</text></svg>
+<figcaption>Paired bootstrap, 600 resamples of turns, out-of-fold predictions.
+English is decisive. Hindi's mean improves (882 → 836 ms)
+but the interval on the gain touches zero.</figcaption></figure>
+<div class="callout warn"><h3>What we will not claim</h3>
+<p><strong>Hindi is not yet a demonstrable win.</strong> The gain is
+46 ms with a 95% interval of
+[0, 192]. The discrimination is
+real — hard_auc 0.71 against 0.509 before the listening study — but
+converting ranking into milliseconds needs more precision on long holds than we
+have. We would rather say so than quote the 511 ms in-sample number.</p></div>
+
+<h2>Human vs. coding agent</h2>
+<p>The brief asks who did what. The split below is literal: the human work is
+work the agent could not do, and it is the reason the Hindi half of this project
+exists at all.</p>
+<div class="split">
+<div class="card"><div class="who h">Human</div>
+<h3>The listening study — and the features it produced</h3>
+<ul>
+<li>Ran a <strong>36-clip blind listening study</strong> (balanced, Hindi-weighted,
+hearing only what the model hears): <strong>72.2% overall,
+75% Hindi, 87.5% on confident Hindi calls</strong>.
+The agent cannot hear audio; this number exists only because a person made it.</li>
+<li><strong>Established that the Hindi ceiling was not a data ceiling.</strong> The
+agent had proved the model was at chance and could not tell "features are blind"
+from "signal is absent". 75% blind accuracy on the identical contrast settled it
+and justified continuing.</li>
+<li><strong>Native-speaker judgements</strong> that became three feature families:
+pitch-position-within-speaker's-range, breath, and Hindi verb-final vowel quality
+(→ MFCCs). Each is traceable to a specific written note.</li>
+<li><strong>Calibrated confidence</strong> (conf-5 82%,
+conf-3 67%), evidence the cue is a real audible
+property rather than noise.</li>
+</ul></div>
+<div class="card"><div class="who a">Coding agent</div>
+<h3>Infrastructure, DSP, modelling, and the traps</h3>
+<ul>
+<li>Bit-exact reimplementation of the scorer (18 tests) so selection runs on the
+real metric; <code>hard_auc</code>; the paired bootstrap.</li>
+<li>Causality by construction + 6-way mutation tests; caught the dataset's
+<strong>file-length leak</strong> (AUC 1.000 / 100 ms) and the
+<strong>in-sample trap</strong> (511 ms).</li>
+<li><strong>Vectorised YIN written from scratch</strong> (<code>eotlib/yin.py</code>)
+after finding the voicing gate marked 99% of frames voiced; 0.42% pitch
+disagreement with pyin at 68× the speed.</li>
+<li>Cost-aware weighting, rank calibration, the baseline floor
+(<code>P_FLOOR</code>), model selection, and turning the human's notes into
+51 features.</li>
+</ul></div>
+</div>
+<p style="font-size:13.5px;color:var(--ink-3)">Stated plainly: the agent built the
+machine and found the traps; the human supplied the perception the machine did not
+have and the evidence that the remaining gap was worth chasing. Neither half
+reaches 0.71 Hindi hard_auc alone — the agent's model sat at 0.509 until
+the listening study, and the study's notes are prose until something turns them
+into MFCCs and percentile ranks.</p>
+
+<h2>Why this beats the status quo</h2>
+<table>
+<tr><th>Status quo</th><th>What we do instead</th><th>Evidence</th></tr>
+<tr><td>Silence timer (naive VAD endpointing)</td><td>Prosodic model of turn-finality</td>
+<td class="num">English 1600 → 1116 ms; wins 100% of resamples</td></tr>
+<tr><td>Optimise AUC / accuracy</td><td>Optimise the real metric; report <code>hard_auc</code></td>
+<td class="num">AUC 0.685 hid a chance-level 0.52 on the pauses that pay</td></tr>
+<tr><td>Treat every hold as equally bad</td><td>Weight holds by whether they can interrupt anyone</td>
+<td class="num">English 1284 → 1150 ms while AUC <em>fell</em></td></tr>
+<tr><td>Trust the library pitch tracker</td><td>Measure it; write one that fits the job</td>
+<td class="num">99% of frames were called voiced; 68× speedup, 0.42% error</td></tr>
+<tr><td>Report the best number you saw</td><td>Out-of-fold only, bootstrapped, in-sample rejected</td>
+<td class="num">Refused the 511 ms; publish 1116 / 850</td></tr>
+</table>
+
+<h2>Where it fails, and what is next</h2>
+<p>The residual errors are the ones the human listener also got wrong:
+syntactically complete clauses where the speaker carried on anyway
+(<em>"statement looked complete, baat karke gaya tha"</em>) — four of six Hindi
+misses were this. Prosody alone cannot separate those, and notably the human
+<em>heard</em> the prosody and overrode it with syntax
+(<em>"felt that speaker wanted to speak more"</em>), so a prosody-only model can
+beat a person on exactly that class. Next: round two of the error-listening kit
+(built, 32 clips of the most expensive out-of-fold mistakes), then a small
+from-scratch CNN over log-mel of the last 1.5 s with augmentation — the
+handcrafted plateau is a feature-vocabulary ceiling, not a model-capacity one
+(every classifier we tried lands at Hindi hard_auc 0.61–0.71).</p>
+
+<footer>
+<p><strong>Reproduce:</strong> <code>python train.py</code> ·
+<code>python predict.py --data_dir &lt;folder&gt; --out predictions.csv</code> ·
+<code>python -m pytest</code> (fast tier) · <code>python -m pytest -m slow</code>
+(causality on all 496 pauses) · <code>python tools/make_summary.py</code> regenerates this page.</p>
+<p>Companion docs: <strong>RUNLOG.md</strong> (13 scored runs, including the two
+wrong hypotheses) · <strong>NOTES.md</strong> (signal, failures, next steps).
+Charts are inline SVG generated from <code>artifacts/results.json</code>; the
+palette passes all six colour checks in light and dark.</p>
+</footer>
+</div></div>

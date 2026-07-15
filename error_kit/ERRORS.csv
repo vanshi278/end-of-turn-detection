@@ -1,0 +1,33 @@
+clip_id,kind,lang,turn_id,pause_index,p_eot,truth,pause_dur,audio_file,pause_start,pause_end,why
+err_00,FALSE_ALARM,hindi,hi__090,2,0.849,hold,0.6,audio/hi__090.wav,17.0,17.6,pitch is still the same
+err_01,FALSE_ALARM,hindi,hi__051,1,0.695,hold,1.4,audio/hi__051.wav,16.9,18.3,laaye in the end
+err_02,FALSE_ALARM,hindi,hi__087,0,0.689,hold,0.9,audio/hi__087.wav,7.5,8.4,usdin is not an ending word
+err_03,FALSE_ALARM,hindi,hi__036,1,0.687,hold,0.6,audio/hi__036.wav,8.7,9.3,speakiing fast end mai usually we speak slowly
+err_04,FALSE_ALARM,hindi,hi__029,2,0.645,hold,1.5,audio/hi__029.wav,10.2,11.7,number is not the end
+err_05,FALSE_ALARM,hindi,hi__046,1,0.547,hold,0.8,audio/hi__046.wav,5.1,5.9,"aur is not end, it is conjuction"
+err_06,FALSE_ALARM,hindi,hi__089,0,0.531,hold,0.6,audio/hi__089.wav,3.6,4.2,not sure
+err_07,FALSE_ALARM,hindi,hi__097,4,0.528,hold,1.0,audio/hi__097.wav,14.7,15.7,dont know
+err_08,MISS,hindi,hi__094,5,0.1,eot,1.38,audio/hi__094.wav,8.0,9.377,
+err_09,MISS,hindi,hi__033,2,0.117,eot,1.13,audio/hi__033.wav,28.3,29.43,
+err_10,MISS,hindi,hi__090,3,0.243,eot,0.98,audio/hi__090.wav,19.3,20.28,
+err_11,MISS,hindi,hi__093,0,0.254,eot,0.24,audio/hi__093.wav,3.4,3.642,
+err_12,MISS,hindi,hi__047,0,0.291,eot,1.09,audio/hi__047.wav,2.0,3.09,
+err_13,MISS,hindi,hi__097,5,0.303,eot,0.47,audio/hi__097.wav,19.2,19.673,
+err_14,MISS,hindi,hi__062,0,0.314,eot,0.95,audio/hi__062.wav,0.9,1.852,
+err_15,MISS,hindi,hi__000,2,0.333,eot,1.34,audio/hi__000.wav,15.7,17.044,
+err_16,FALSE_ALARM,english,en__091,0,0.836,hold,3.0,audio/en__091.wav,0.6,3.6,
+err_17,FALSE_ALARM,english,en__002,5,0.785,hold,1.6,audio/en__002.wav,22.3,23.9,
+err_18,FALSE_ALARM,english,en__064,0,0.766,hold,0.6,audio/en__064.wav,2.8,3.4,
+err_19,FALSE_ALARM,english,en__024,1,0.684,hold,1.3,audio/en__024.wav,5.5,6.8,
+err_20,FALSE_ALARM,english,en__008,2,0.608,hold,0.8,audio/en__008.wav,8.3,9.1,
+err_21,FALSE_ALARM,english,en__030,2,0.603,hold,0.8,audio/en__030.wav,8.0,8.8,
+err_22,FALSE_ALARM,english,en__070,4,0.598,hold,0.7,audio/en__070.wav,17.8,18.5,
+err_23,FALSE_ALARM,english,en__018,2,0.54,hold,2.3,audio/en__018.wav,5.9,8.2,
+err_24,MISS,english,en__078,0,0.087,eot,1.32,audio/en__078.wav,10.7,12.015,
+err_25,MISS,english,en__009,0,0.131,eot,1.26,audio/en__009.wav,7.2,8.463,
+err_26,MISS,english,en__077,2,0.157,eot,1.36,audio/en__077.wav,10.2,11.562,
+err_27,MISS,english,en__070,6,0.171,eot,1.38,audio/en__070.wav,22.0,23.384,
+err_28,MISS,english,en__087,0,0.172,eot,1.36,audio/en__087.wav,7.0,8.359,
+err_29,MISS,english,en__025,0,0.175,eot,1.37,audio/en__025.wav,3.3,4.671,
+err_30,MISS,english,en__038,3,0.201,eot,1.39,audio/en__038.wav,14.7,16.091,
+err_31,MISS,english,en__002,6,0.245,eot,1.37,audio/en__002.wav,24.7,26.071,

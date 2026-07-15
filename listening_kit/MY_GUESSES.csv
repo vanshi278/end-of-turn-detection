@@ -1,0 +1,37 @@
+clip_id,your_guess,confidence,what_you_heard
+clip_001,hold,4,it felt as if it was incomplete person breathing
+clip_002,eot,4,"it told to do something, ended with rakhiyega"
+clip_003,hold,4,looked incomplete
+clip_004,eot,5,"sentence looked complete, as if the question ended"
+clip_005,eot,4,"statement looked complete, baat karke gaya tha"
+clip_006,eot,3,sentence completion
+clip_007,eot,4,pitch dropped
+clip_008,hold,5,"pitch was very high, cant be the end"
+clip_009,eot,1,"i mean sentence looked complete, but felt that speaker wanted to spewak more"
+clip_010,eot,5,pitch droppes
+clip_011,hold,3,"pitc drops, voice was low"
+clip_012,hold,4,person taking breath
+clip_013,eot,5,"pitch dropped, proper ending"
+clip_014,hold,1,idk
+clip_015,eot,5,"pitch dropped, emphasis was there"
+clip_016,eot,3,pitch change
+clip_017,hold,4,"something was pending,"
+clip_018,hold,3,incomplete
+clip_019,hold,5,incomplete
+clip_020,hold,1,not clear
+clip_021,eot,5,"pitych dropped, rahega used"
+clip_022,hold,3,incomplete
+clip_023,hold,3,"pitch same, breathing voice"
+clip_024,hold,2,incomplete not clear
+clip_025,eot,3,pitch change was like an end
+clip_026,eot,4,pause was with low pitch
+clip_027,eot,5,completely meaningful sentence
+clip_028,hold,5,abrupt stopping
+clip_029,hold,1,"cant say, depends on context"
+clip_030,hold,2,not clear
+clip_031,eot,4,meaningful question
+clip_032,eot,3,meaningfull sentence
+clip_033,hold,3,looked like an end but felt something was off
+clip_034,eot,5,complete statement low pitch ending
+clip_035,eot,4,end
+clip_036,hold,5,"ended with haan, something will be said, like this cant be the end"
