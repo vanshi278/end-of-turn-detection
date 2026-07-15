@@ -173,4 +173,26 @@ the discrimination is real; converting it into milliseconds needs either a lower
 delay (more precision on long holds) or a hidden set whose baseline is less
 degenerate than this one's.
 
-Final: **english 1116 ms / hindi 850 ms**, out-of-fold, official scorer.
+### Run 14 - HUMAN round 2: error audit on the model's most expensive mistakes
+The human annotated the model's worst out-of-fold errors (error_kit/, Hindi
+false alarms first), giving the *reason* each pause was really a hold. Three of
+those reasons became features; two more were built, measured, and **cut** for
+carrying no signal (rhythm_regularity 0.512, syll_final_vs_prev3 0.516 -- the
+perception is real, energy-peak timing is not how to measure it).
+
+What survived, univariate hard_auc:
+* "aur is not end, it is conjunction" -> final-syllable **prominence**
+  (`prom_energy_final`): **0.660 hindi** -- our 2nd-best Hindi feature.
+* "speaking fast, end mai usually we speak slowly" -> **local deceleration**
+  (`rate_final_500` 0.694, `rate_decel` 0.669 -- in *english*; right cue, and
+  the languages turn out to differ on it).
+
+Model (55 features): hard_auc english **0.720 -> 0.735**, hindi **0.710 ->
+0.714**. Bootstrap gain statistically unchanged (en ~430 ms, win 100%; hi ~45 ms,
+win ~50%). Single-sample english OOF moved 1116 -> 1170 ms; the bootstrap is the
+estimator we trust, and it says the two models are equivalent on delay with
+better ranking -- we ship the 55-feature model for the cleaner hard_auc and the
+honest feature set.
+
+Final: **english 1170 ms / hindi 850 ms** single-sample out-of-fold, official
+scorer; bootstrap en 443 -> ~430 ms gain (win 100%), hi ~45 ms (win ~50%).

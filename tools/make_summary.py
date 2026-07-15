@@ -396,6 +396,11 @@ pitch-position-within-speaker's-range, breath, and Hindi verb-final vowel qualit
 <li><strong>Calibrated confidence</strong> (conf-5 {L['by_conf'].get('5',[0,0])[0]*100:.0f}%,
 conf-3 {L['by_conf'].get('3',[0,0])[0]*100:.0f}%), evidence the cue is a real audible
 property rather than noise.</li>
+<li><strong>Round-2 error audit</strong>: annotated the model's most expensive
+out-of-fold mistakes with <em>why</em> each was wrong. The feature logic came from
+these notes — <em>"aur is not end, it is conjunction"</em> became final-syllable
+prominence (2nd-best Hindi feature, 0.660), <em>"end mai usually we speak
+slowly"</em> became local deceleration (0.694 English).</li>
 </ul></div>
 <div class="card"><div class="who a">Coding agent</div>
 <h3>Infrastructure, DSP, modelling, and the traps</h3>

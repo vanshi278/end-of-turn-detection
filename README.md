@@ -12,8 +12,8 @@ Out-of-fold (GroupKFold by turn, 3 seeds), scored by the official `score.py`:
 
 | | silence baseline | ours | bootstrap gain (600 turn-resamples) |
 |---|---|---|---|
-| english | 1600 ms | **1116 ms** | **443 ms** [130, 649], wins 100% |
-| hindi | 850 ms | 850 ms | 46 ms [0, 191], wins 50% |
+| english | 1600 ms | **1170 ms** | **~430 ms**, wins 100% of resamples |
+| hindi | 850 ms | 850 ms | ~45 ms, wins ~50% |
 
 English is a decisive win; **Hindi is not yet a demonstrable one** and we say so.
 The same model scores 511 ms in-sample on these folders — that is memorisation
